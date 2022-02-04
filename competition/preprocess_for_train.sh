@@ -1,0 +1,1 @@
+python data_preprocessing.py --task=train --processed-csv=preprocessed_train.csv
