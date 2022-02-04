@@ -18,6 +18,13 @@ torch==1.8.1
 tqdm==4.62.3   
 
 ## 실행 방법
+### 데이터 경로
+- 특정 폴더에 train, test 폴더가 있고 다시 번호가 붙은 폴더, 그 내부에 csv, json, jpg 파일이 있어야 함.
+- 예시: train/10000/10000.csv 혹은  test/10000/10000.jpg 와 같은 구조
+- default 경로는 /data
+- 즉, /data/train/---, /data/test/--- 와 같은 방식을 기대
+- default 경로를 따르지 않으려면 data_preprocessing.py 실행시 --data-folder 부분에 파일 경로 추가. 단, 위의 첫번째 사항과 같은 규칙을 지켜야 함.
+
 ### 훈련 데이터 전처리와 모델 학습 
 - preprocess_for_train.sh 실행 -> 훈련용 전처리 수행
 - train.sh 실행 -> catboost와 deep neural network 모델 학습
