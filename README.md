@@ -1,0 +1,1 @@
+# LG_plant_disease_diagnosis_competition
