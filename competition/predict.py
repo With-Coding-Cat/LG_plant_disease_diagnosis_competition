@@ -12,8 +12,7 @@ import csv
 from tqdm import tqdm
 
 parser = argparse.ArgumentParser(description='It is for predict')
-parser.add_argument('--checkpoint_torch', type=str, default='model_checkpoint/torch/one_model_drop0.3_best/best.pt', help='Checkpoint file for pytorch model', required=False)
-#parser.add_argument('--checkpoint_torch', type=str, default='model_checkpoint/torch/multi_output/max_f1_total_0.pt', help='Checkpoint file for pytorch model', required=False)
+parser.add_argument('--checkpoint_torch', type=str, default='model_checkpoint/torch/multi_output/max_f1_total_0.pt', help='Checkpoint file for pytorch model', required=False)
 
 parser.add_argument('--checkpoint_cat', type=str, default='model_checkpoint/boosting', help='Checkpoint file for pytorch model', required=False)
 parser.add_argument('--csv-file', type=str, default='preprocessed_test.csv', required=False)
@@ -35,13 +34,9 @@ print("Start Predict")
 test_dataset = TrainValDataset(test_csv, train=False, target_label='crop')
 
 base_model = BaseModel().to(DEVICE)
-#base_model = torch.nn.DataParallel(base_model).to(DEVICE)
 crop_model = CropHeadClassifier().to(DEVICE)
-#crop_model = torch.nn.DataParallel(crop_model).to(DEVICE)
 disease_model = DiseaseHeadClassifier().to(DEVICE)
-#disease_model = torch.nn.DataParallel(disease_model).to(DEVICE)
 risk_model = RiskHeadClassifier().to(DEVICE)
-#risk_model = torch.nn.DataParallel(risk_model).to(DEVICE)
 
 checkpoint = torch.load(args.checkpoint_torch, map_location=DEVICE)
 
