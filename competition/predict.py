@@ -12,9 +12,9 @@ import csv
 from tqdm import tqdm
 
 parser = argparse.ArgumentParser(description='It is for predict')
-parser.add_argument('--checkpoint_torch', type=str, default='model_checkpoint/torch/multi_output/max_f1_total_0.pt', help='Checkpoint file for pytorch model', required=False)
+parser.add_argument('--checkpoint-torch', type=str, default='model_checkpoint/torch/multi_output/max_f1_total_0.pt', help='Checkpoint file for pytorch model', required=False)
 
-parser.add_argument('--checkpoint_cat', type=str, default='model_checkpoint/boosting', help='Checkpoint file for pytorch model', required=False)
+parser.add_argument('--checkpoint-cat', type=str, default='model_checkpoint/boosting', help='Checkpoint file for pytorch model', required=False)
 parser.add_argument('--csv-file', type=str, default='preprocessed_test.csv', required=False)
 parser.add_argument('--csv-save', type=str, default='result.csv', required=False)
 
@@ -33,7 +33,7 @@ target_labels = ['crop', 'disease', 'risk']
 print("Start Predict")
 test_dataset = TrainValDataset(test_csv, train=False, target_label='crop')
 
-base_model = BaseModel().to(DEVICE)
+base_model = BaseModel(pretrained=False).to(DEVICE)
 crop_model = CropHeadClassifier().to(DEVICE)
 disease_model = DiseaseHeadClassifier().to(DEVICE)
 risk_model = RiskHeadClassifier().to(DEVICE)
