@@ -16,8 +16,8 @@ parser.add_argument('--checkpoint_torch', type=str, default='model_checkpoint/to
 #parser.add_argument('--checkpoint_torch', type=str, default='model_checkpoint/torch/multi_output/max_f1_total_0.pt', help='Checkpoint file for pytorch model', required=False)
 
 parser.add_argument('--checkpoint_cat', type=str, default='model_checkpoint/boosting', help='Checkpoint file for pytorch model', required=False)
-parser.add_argument('--csv_file', type=str, default='preprocessed_test.csv', required=False)
-parser.add_argument('--csv_save', type=str, default='result.csv', required=False)
+parser.add_argument('--csv-file', type=str, default='preprocessed_test.csv', required=False)
+parser.add_argument('--csv-save', type=str, default='result.csv', required=False)
 
 args = parser.parse_args()
 
@@ -113,7 +113,7 @@ for current_label in target_labels:
                     disease = disease.to(DEVICE)
                     risk_mask = risk_mask.to(DEVICE)
                     
-                    risk_idx_list = risk_model(img_processed, disease, risk_mask).softmax(dim=-1).detach().cpu().tolist()
+                    risk_idx_list = torch.argmax(risk_model(img_processed, disease, risk_mask), dim=-1).detach().cpu().tolist()
                     
                     preds_risk.extend(risk_idx_list)
                 
