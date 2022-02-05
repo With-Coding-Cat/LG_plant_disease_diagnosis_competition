@@ -11,10 +11,8 @@ class FocalLoss(nn.Module):
 
     @torch.cuda.amp.autocast()
     def forward(self, inputs, targets, mixup=None):
-    
         loss = self.loss_fn(inputs, targets)
         pt = torch.exp(-loss)
-        
         F_loss = self.alpha * (1-pt)**self.gamma * loss
         
         if mixup is not None:
