@@ -5,14 +5,10 @@ from meta_data import disease_encoding
 
 
 class BaseModel(nn.Module):
-    def __init__(self, num_classes=1000, drop_p=0., checkpoint=None):
+    def __init__(self, num_classes=1000, drop_p=0., pretrained=True):
         super().__init__()
         self.num_classes = num_classes
-        if checkpoint:
-            self.model = timm.create_model('resnetv2_50x3_bitm_in21k', pretrained=False, num_classes=num_classes, drop_rate=drop_p,)
-            self.model.load_dict(checkpoint)
-        else:
-            self.model = timm.create_model('resnetv2_50x3_bitm_in21k', pretrained=True, num_classes=num_classes, drop_rate=drop_p,)
+        self.model = timm.create_model('resnetv2_50x3_bitm_in21k', pretrained=pretrained, num_classes=num_classes, drop_rate=drop_p,)
             
     @torch.cuda.amp.autocast()
     def forward(self, img):
