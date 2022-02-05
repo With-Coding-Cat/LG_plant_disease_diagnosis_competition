@@ -12,15 +12,15 @@ from meta_data import use_columns, disease_encoding
 
 def prepare_dataframe(csv_files, json_files, img_files, save_path, percentile_num=50):
     csv_files.sort()
-    if json_files[0]:
+    if json_files[0] is not None:
         json_files.sort()
     img_files.sort()
-    files_list = [(csv_file, json_file, img_file, percentile_num) for csv_file, json_file, img_file in zip(csv_files, json_files, img_files)]
+    files_list_and_percentile_num = [(csv_file, json_file, img_file, percentile_num) for csv_file, json_file, img_file in zip(csv_files, json_files, img_files)]
     
     start_time = time.time()
     print('Data Loading.')
     with Pool() as pool:
-        dict_list = pool.map(return_dict_from_files, files_list)
+        dict_list = pool.map(return_dict_from_files, files_list_and_percentile_num)
     
     df = pd.DataFrame(dict_list)
     df.to_csv(save_path, index=False)
@@ -32,8 +32,8 @@ def make_nan(x):
         return np.nan
     return x
 
-def return_dict_from_files(x: tuple):
-    csv_file, json_file, img_file, percentile_num = x
+def return_dict_from_files(files_list_and_percentile_num: tuple):
+    csv_file, json_file, img_file, percentile_num = files_list_and_percentile_num
     df_dict = {}
     
     temp = pd.read_csv(csv_file)
