@@ -51,3 +51,4 @@
 - train_cat.py : catboost를 훈련하기 위한 코드. grid search를 약간만 변형하면 진행할 수 있으며, 그 결과들과 feature importance 확인을 위한 부분은 주석처리되어 있음.
 - train_torch.py : Deep Neural Network 모델을 훈련하기 위한 코드. Batch size의 default는 44로 약 48GB의 GPU 메모리가 필요. 다만, 훈련 속도 감소를 감수한다면 amp 적용부분을 제거하면 되고, 20%가 넘는 batch 사이즈 증가가 가능.
 - predict.py : 실제 추론을 위한 코드. 위의 코드를 실행할때, default값은 전혀 손대지 않았다면 별 문제 없이 진행. 체크포인트 저장 위치 등을 바꾸었다면 그 경로를 입력해줘야 함.
+
