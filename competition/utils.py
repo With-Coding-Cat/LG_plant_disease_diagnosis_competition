@@ -1,12 +1,12 @@
-from torch.utils.data import Dataset
-import torch
+import json
 import cv2
 import pandas as pd
 import numpy as np
 import albumentations as albu
 from albumentations.pytorch import ToTensorV2
-from meta_data import disease_mask, risk_with_crop_mask, disease_encoding
-import json
+import torch
+from torch.utils.data import Dataset
+from meta_data import disease_mask, risk_with_crop_mask
 
 class TrainValDataset(Dataset):
     def __init__(self, data_path, train=True, target_label=None, crop_list=None, disease_list=None):
@@ -119,9 +119,33 @@ def total_acc_cal(preds_crop, answers_crop, preds_disease, answers_disease, pred
     return np.sum(acc_count == 3) / len(acc_count)
     
     
-    
 def get_sampler_weight(df: pd.DataFrame or pd.Series) -> list:
     count_dict = dict(df.value_counts())
     df_list = df.to_list()
     weight = [1./count_dict[target] for target in df_list]
     return weight
+
+def return_disease_mask(crop_list, DEVICE):
+    disease_mask_tensor = []
+    for crop in crop_list:
+        disease_mask_tensor.append(disease_mask[crop])
+    disease_mask_tensor = torch.tensor(disease_mask_tensor, device=DEVICE)
+    
+
+def return_risk_mask(crop_list, disease_list, DEVICE):
+    risk_mask_tensor = []
+    for crop, disease in zip(crop_list, disease_list):
+        risk_mask_tensor.append(risk_with_crop_mask(crop + disease*10))
+    risk_mask_tensor = torch.tensor(risk_mask_tensor, device=DEVICE)
+    
+    
+def ensemble_cal(DL_pro_target_df_catboost):
+    DL_pro, target_df, boosting = DL_pro_target_df_catboost
+    boosting_pro = boosting.predict_proba(target_df)
+    return np.argmax(DL_pro + boosting_pro, axis=-1).tolist()
+    
+def ensemble_cal_with_mask(DL_pro_target_df_catboost):
+    DL_pro, target_df, boosting, mask = DL_pro_target_df_catboost
+    boosting_pro = boosting.predict_proba(target_df)
+    boosting_pro = np.ma.MaskedArray(data=boosting_pro, mask=mask.numpy())
+    return np.argmax(DL_pro + boosting_pro.data, axis=-1).tolist()

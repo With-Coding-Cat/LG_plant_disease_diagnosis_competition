@@ -30,7 +30,6 @@ disease_decoding = {}
 for k, v in enumerate(disease_encoding):
     disease_decoding[k] = v
 
-
 disease_mask = {}
 for k, values in disease_dict.items():
     disease_mask[k] = [True] * len(disease_encoding)

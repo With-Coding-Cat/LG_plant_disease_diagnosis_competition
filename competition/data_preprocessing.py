@@ -104,7 +104,6 @@ def return_dict_from_files(files_list_and_percentile_num: tuple):
             df_dict['coordinate'] = coordinate
             df_dict['strat'] = str(temp_dict['annotations']['crop']) + str(temp_dict['annotations']['disease']) + str(temp_dict['annotations']['risk']) + str(temp_dict['annotations']['area']) + str(temp_dict['annotations']['grow'])
             
-                
     return df_dict
 
 def kfold_split_save(csv_file, save_folder, n_splits=5, startified='strat'):

@@ -1,0 +1,2 @@
+python data_preprocessing.py --task=test --processed-csv=preprocessed_test.csv
+python predict.py --checkpoint-torch=model_checkpoint/torch/best_model/best.pt --checkpoint-cat-crop=model_checkpoint/boosting/crop/crop_best.pkl --checkpoint-cat-disease=model_checkpoint/boosting/disease/disease_best.pkl

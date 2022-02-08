@@ -1,6 +1,7 @@
 import argparse
 import os
 import glob
+import numpy as np
 import torch
 from torch.utils.tensorboard import SummaryWriter
 from torch.utils.data import DataLoader
@@ -10,8 +11,6 @@ from model import BaseModel, CropHeadClassifier, DiseaseHeadClassifier, RiskHead
 from utils import TrainValDataset, total_acc_cal
 from meta_data import disease_encoding
 from loss import FocalLoss
-
-import numpy as np
 
 parser = argparse.ArgumentParser(description='Select Train Mode')
 parser.add_argument('--save-folder', type=str, default=None, help='Save folder for Model. Recommand Not To Use.')
@@ -46,7 +45,7 @@ dataset_folder = args.dataset_folder
 if save_folder:
     os.makedirs(save_folder, exist_ok=True)
 else:
-    save_folder = os.path.join(BASE_SAVE_FOLDER, 'multi_output')
+    save_folder = os.path.join(BASE_SAVE_FOLDER, 'trained')
     os.makedirs(save_folder, exist_ok=True)
 
 total_crop_labels = [i for i in range(6)]
@@ -58,9 +57,8 @@ test_csv_files = sorted(glob.glob(dataset_folder + '/*test.csv'))
 
 crop_cat = CatBoostClassifier()
 disease_cat = CatBoostClassifier()
-for cat_file_path, cat_model in zip(sorted(glob.glob(args.checkpoint_cat+'/*/*')), [crop_cat, disease_cat]):
+for cat_file_path, cat_model in zip(sorted(glob.glob(args.checkpoint_cat+'/*/*_0.pkl')), [crop_cat, disease_cat]):
     cat_model.load_model(cat_file_path)
-
 
 for k_fold, (train_csv, test_csv) in enumerate(zip(train_csv_files, test_csv_files)):
     print("Train csv and Test csv:", train_csv, '\t', test_csv)

@@ -32,17 +32,17 @@ else:
 
 if target_label == 'crop':
     total_labels = [i for i in range(6)]
-    ignored_features = ['img_path', 'coordinate', 'strat']
+    ignored_features = ['img_path', 'coordinate']
     cat_features = ['외부 누적일사 평균_is_exist', '내부 CO2 평균_is_exist','내부 CO2 최고_is_exist','내부 CO2 최저_is_exist']
     drop_labels = ['crop', 'disease', 'risk']
 elif target_label == 'disease':
     total_labels = [i for i in range(len(disease_encoding))]
-    ignored_features = ['img_path', 'coordinate', 'strat']
+    ignored_features = ['img_path', 'coordinate']
     cat_features = ['외부 누적일사 평균_is_exist', '내부 CO2 평균_is_exist','내부 CO2 최고_is_exist','내부 CO2 최저_is_exist', 'crop']
     drop_labels = ['disease', 'risk']
 elif target_label == 'risk':
     total_labels = [i for i in range(4)]
-    ignored_features = ['img_path', 'coordinate', 'strat']
+    ignored_features = ['img_path', 'coordinate']
     cat_features = ['외부 누적일사 평균_is_exist', '내부 CO2 평균_is_exist','내부 CO2 최고_is_exist','내부 CO2 최저_is_exist', 'crop', 'disease']
     drop_labels = ['risk']
     
