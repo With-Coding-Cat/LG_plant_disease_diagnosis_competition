@@ -70,8 +70,7 @@ for current_label in target_labels:
             test_dataset._change_label_and_update_disease(preds_disease)
     
     with torch.no_grad():
-        if True:
-        #with torch.cuda.amp.autocast():
+        with torch.cuda.amp.autocast():
             if current_label == 'crop':
                 list_for_crop_prediction = []
                 for img_idx, data in tqdm(enumerate(test_dataloader)):
